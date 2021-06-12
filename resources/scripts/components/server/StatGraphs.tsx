@@ -140,7 +140,9 @@ export default () => {
                 </div>
                 <div css={tw`w-full sm:w-1/2 mt-4 sm:mt-0`}>
                     <TitledGreyBox title={'CPU'} icon={faMicrochip} css={tw`ml-0 sm:ml-4`}>
-                        Your server is starting, please wait.
+                        <p css={tw`text-xs text-neutral-400 text-center p-3`}>
+                            Your server is starting, please wait.
+                        </p>
                     </TitledGreyBox>
                 </div>
             </div>
@@ -158,7 +160,9 @@ export default () => {
                 </div>
                 <div css={tw`w-full sm:w-1/2 mt-4 sm:mt-0`}>
                     <TitledGreyBox title={'CPU'} icon={faMicrochip} css={tw`ml-0 sm:ml-4`}>
-                        Your server is offline.
+                        <p css={tw`text-xs text-neutral-400 text-center p-3`}>
+                            Your server is offline.
+                        </p>
                     </TitledGreyBox>
                 </div>
             </div>
