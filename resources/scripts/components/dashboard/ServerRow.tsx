@@ -82,7 +82,7 @@ export default ({ server, className }: { server: Server; className?: string }) =
                 </div>
                 <div>
                     <p css={tw`text-lg break-words`}>{server.name}</p>
-                    <p css={tw`text-sm text-neutral-400 ml-2`}>
+                    <p css={tw`text-sm text-neutral-400`}>
                         {
                             server.allocations.filter(alloc => alloc.isDefault).map(allocation => (
                                 <React.Fragment key={allocation.ip + allocation.port.toString()}>
