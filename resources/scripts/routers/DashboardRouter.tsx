@@ -7,9 +7,11 @@ import AccountApiContainer from '@/components/dashboard/AccountApiContainer';
 import { NotFound } from '@/components/elements/ScreenBlock';
 import TransitionRouter from '@/TransitionRouter';
 import SubNavigation from '@/components/elements/SubNavigation';
+import tw from 'twin.macro';
 
 export default ({ location }: RouteComponentProps) => (
     <>
+      <div css={tw`bg-gradient-to-r from-purplebluedark to-purplebluelight pb-60`}>
         <NavigationBar/>
         {location.pathname.startsWith('/account') &&
         <SubNavigation>
@@ -19,6 +21,8 @@ export default ({ location }: RouteComponentProps) => (
             </div>
         </SubNavigation>
         }
+      </div>
+      <div css={tw`-mt-60`}>
         <TransitionRouter>
             <Switch location={location}>
                 <Route path={'/'} exact>
@@ -35,5 +39,6 @@ export default ({ location }: RouteComponentProps) => (
                 </Route>
             </Switch>
         </TransitionRouter>
+      </div>
     </>
 );

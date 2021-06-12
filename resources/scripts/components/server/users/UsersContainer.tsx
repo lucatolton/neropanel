@@ -11,6 +11,7 @@ import { httpErrorToHuman } from '@/api/http';
 import Can from '@/components/elements/Can';
 import ServerContentBlock from '@/components/elements/ServerContentBlock';
 import tw from 'twin.macro';
+import ContentBox from '@/components/elements/ContentBox';
 
 export default () => {
     const [ loading, setLoading ] = useState(true);
@@ -50,8 +51,9 @@ export default () => {
     return (
         <ServerContentBlock title={'Users'}>
             <FlashMessageRender byKey={'users'} css={tw`mb-4`}/>
+            <ContentBox>
             {!subusers.length ?
-                <p css={tw`text-center text-sm text-neutral-300`}>
+                <p css={tw`text-center text-sm text-neutral-300 mt-6`}>
                     It looks like you don&apos;t have any subusers.
                 </p>
                 :
@@ -64,6 +66,7 @@ export default () => {
                     <AddSubuserButton/>
                 </div>
             </Can>
+            </ContentBox>
         </ServerContentBlock>
     );
 };

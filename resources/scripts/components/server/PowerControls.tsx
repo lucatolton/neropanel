@@ -42,7 +42,7 @@ const PowerControls = () => {
                         sendPowerCommand('restart');
                     }}
                 >
-                    Restart
+                    Reboot
                 </Button>
             </Can>
             <Can action={'control.stop'}>

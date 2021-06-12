@@ -46,7 +46,7 @@ export default () => {
                 <>
                     {
                         schedules.length === 0 ?
-                            <p css={tw`text-sm text-center text-neutral-300`}>
+                            <p css={tw`text-sm text-center text-neutral-300 mt-4`}>
                                 There are no schedules configured for this server.
                             </p>
                             :
@@ -67,10 +67,11 @@ export default () => {
                     }
                     <Can action={'schedule.create'}>
                         <div css={tw`mt-8 flex justify-end`}>
-                            <EditScheduleModal visible={visible} onModalDismissed={() => setVisible(false)}/>
+                            {visible && <EditScheduleModal visible={visible} onDismissed={() => setVisible(false)}/>}
                             <Button type={'button'} onClick={() => setVisible(true)}>
                                 Create schedule
                             </Button>
+
                         </div>
                     </Can>
                 </>

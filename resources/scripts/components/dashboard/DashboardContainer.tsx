@@ -5,7 +5,6 @@ import ServerRow from '@/components/dashboard/ServerRow';
 import Spinner from '@/components/elements/Spinner';
 import PageContentBlock from '@/components/elements/PageContentBlock';
 import useFlash from '@/plugins/useFlash';
-import { useStoreState } from 'easy-peasy';
 import { usePersistedState } from '@/plugins/usePersistedState';
 import Switch from '@/components/elements/Switch';
 import tw from 'twin.macro';
@@ -13,8 +12,12 @@ import useSWR from 'swr';
 import { PaginatedResult } from '@/api/http';
 import Pagination from '@/components/elements/Pagination';
 import { useLocation } from 'react-router-dom';
+import ContentBox from '@/components/elements/ContentBox';
+import { State, useStoreState } from 'easy-peasy';
+import { ApplicationStore } from '@/state';
 
 export default () => {
+    const user = useStoreState((state: State<ApplicationStore>) => state.user.data);
     const { search } = useLocation();
     const defaultPage = Number(new URLSearchParams(search).get('page') || '1');
 
@@ -25,8 +28,8 @@ export default () => {
     const [ showOnlyAdmin, setShowOnlyAdmin ] = usePersistedState(`${uuid}:show_all_servers`, false);
 
     const { data: servers, error } = useSWR<PaginatedResult<Server>>(
-        [ '/api/client/servers', (showOnlyAdmin && rootAdmin), page ],
-        () => getServers({ page, type: (showOnlyAdmin && rootAdmin) ? 'admin' : undefined }),
+        [ '/api/client/servers', showOnlyAdmin, page ],
+        () => getServers({ page, type: showOnlyAdmin ? 'admin' : undefined }),
     );
 
     useEffect(() => {
@@ -50,42 +53,48 @@ export default () => {
 
     return (
         <PageContentBlock title={'Dashboard'} showFlashKey={'dashboard'}>
-            {rootAdmin &&
-            <div css={tw`mb-2 flex justify-end items-center`}>
-                <p css={tw`uppercase text-xs text-neutral-400 mr-2`}>
-                    {showOnlyAdmin ? 'Showing others\' servers' : 'Showing your servers'}
-                </p>
-                <Switch
-                    name={'show_all_servers'}
-                    defaultChecked={showOnlyAdmin}
-                    onChange={() => setShowOnlyAdmin(s => !s)}
-                />
-            </div>
-            }
-            {!servers ?
-                <Spinner centered size={'large'}/>
-                :
-                <Pagination data={servers} onPageSelect={setPage}>
-                    {({ items }) => (
-                        items.length > 0 ?
-                            items.map((server, index) => (
-                                <ServerRow
-                                    key={server.uuid}
-                                    server={server}
-                                    css={index > 0 ? tw`mt-2` : undefined}
-                                />
-                            ))
-                            :
-                            <p css={tw`text-center text-sm text-neutral-400`}>
-                                {showOnlyAdmin ?
-                                    'There are no other servers to display.'
+            <p css={tw`text-center text-neutral-100 my-2`}>
+                <br/>
+                <br/>
+                <span css={tw`text-base`}>Welcome back, <strong>{user!.username}</strong>!</span>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+            </p>
+            <ContentBox>
+                <div css={tw`mb-0 sm:mb-6`}>
+                    {rootAdmin &&
+                        <div css={tw`mb-2 flex justify-end items-center`}>
+                            <Switch
+                                name={'show_all_servers'}
+                                defaultChecked={showOnlyAdmin}
+                                onChange={() => setShowOnlyAdmin(s => !s)}
+                            />
+                        </div>
+                    }
+                    {!servers ?
+                        <Spinner centered size={'large'}/>
+                        :
+                        <Pagination data={servers} onPageSelect={setPage}>
+                            {({ items }) => (
+                                items.length > 0 ?
+                                    items.map((server, index) => (
+                                        <ServerRow
+                                            key={server.uuid}
+                                            server={server}
+                                            css={index > 0 ? tw`mt-2` : undefined}
+                                        />
+                                    ))
                                     :
-                                    'There are no servers associated with your account.'
-                                }
-                            </p>
-                    )}
-                </Pagination>
-            }
+                                    <p css={tw`text-center text-sm text-neutral-400`}>
+                                        Seems quite empty here...
+                                    </p>
+                            )}
+                        </Pagination>
+                    }
+                </div>
+            </ContentBox>
         </PageContentBlock>
     );
 };
