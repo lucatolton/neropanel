@@ -19,12 +19,13 @@ import { ServerContext } from '@/state/server';
 import ErrorBoundary from '@/components/elements/ErrorBoundary';
 import { encodePathSegments, hashToPath } from '@/helpers';
 import { dirname } from 'path';
+import ContentBox from '@/components/elements/ContentBox';
 
 const LazyCodemirrorEditor = lazy(() => import(/* webpackChunkName: "editor" */'@/components/elements/CodemirrorEditor'));
 
 export default () => {
     const [ error, setError ] = useState('');
-    const { action } = useParams<{ action: 'new' | string }>();
+    const { action } = useParams();
     const [ loading, setLoading ] = useState(action === 'edit');
     const [ content, setContent ] = useState('');
     const [ modalVisible, setModalVisible ] = useState(false);
@@ -89,6 +90,7 @@ export default () => {
     return (
         <PageContentBlock>
             <FlashMessageRender byKey={'files:view'} css={tw`mb-4`}/>
+            <ContentBox>
             <ErrorBoundary>
                 <div css={tw`mb-4`}>
                     <FileManagerBreadcrumbs withinFileEditor isNewFile={action !== 'edit'}/>
@@ -157,6 +159,7 @@ export default () => {
                     </Can>
                 }
             </div>
+            </ContentBox>
         </PageContentBlock>
     );
 };

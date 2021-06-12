@@ -71,7 +71,6 @@ export default ({ match, location }: RouteComponentProps<{ token: string }>) => 
                     </div>
                     <div css={tw`mt-6`}>
                         <Field
-                            light
                             label={'New Password'}
                             name={'password'}
                             type={'password'}
@@ -80,7 +79,6 @@ export default ({ match, location }: RouteComponentProps<{ token: string }>) => 
                     </div>
                     <div css={tw`mt-6`}>
                         <Field
-                            light
                             label={'Confirm New Password'}
                             name={'passwordConfirmation'}
                             type={'password'}

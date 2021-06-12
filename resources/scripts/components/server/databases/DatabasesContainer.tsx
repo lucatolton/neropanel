@@ -12,6 +12,7 @@ import tw from 'twin.macro';
 import Fade from '@/components/elements/Fade';
 import ServerContentBlock from '@/components/elements/ServerContentBlock';
 import { useDeepMemoize } from '@/plugins/useDeepMemoize';
+import ContentBox from '@/components/elements/ContentBox';
 
 export default () => {
     const uuid = ServerContext.useStoreState(state => state.server.data!.uuid);
@@ -39,11 +40,12 @@ export default () => {
     return (
         <ServerContentBlock title={'Databases'}>
             <FlashMessageRender byKey={'databases'} css={tw`mb-4`}/>
+            <ContentBox>
             {(!databases.length && loading) ?
                 <Spinner size={'large'} centered/>
                 :
                 <Fade timeout={150}>
-                    <>
+                    <div css={tw`mt-6`}>
                         {databases.length > 0 ?
                             databases.map((database, index) => (
                                 <DatabaseRow
@@ -53,7 +55,7 @@ export default () => {
                                 />
                             ))
                             :
-                            <p css={tw`text-center text-sm text-neutral-300`}>
+                            <p css={tw`text-center text-sm text-neutral-400`}>
                                 {databaseLimit > 0 ?
                                     'It looks like you have no databases.'
                                     :
@@ -62,7 +64,7 @@ export default () => {
                             </p>
                         }
                         <Can action={'database.create'}>
-                            <div css={tw`mt-6 flex items-center justify-end`}>
+                            <div css={tw`mt-6 sm:flex items-center justify-end`}>
                                 {(databaseLimit > 0 && databases.length > 0) &&
                                 <p css={tw`text-sm text-neutral-300 mb-4 sm:mr-6 sm:mb-0`}>
                                     {databases.length} of {databaseLimit} databases have been allocated to this
@@ -70,13 +72,14 @@ export default () => {
                                 </p>
                                 }
                                 {databaseLimit > 0 && databaseLimit !== databases.length &&
-                                    <CreateDatabaseButton css={tw`flex justify-end mt-6`}/>
+                                    <CreateDatabaseButton css={tw`w-full sm:w-auto`}/>
                                 }
                             </div>
                         </Can>
-                    </>
+                    </div>
                 </Fade>
             }
+            </ContentBox>
         </ServerContentBlock>
     );
 };

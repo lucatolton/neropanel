@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import styled, { css, keyframes } from 'styled-components/macro';
 import tw from 'twin.macro';
 
@@ -8,11 +8,6 @@ interface Props {
     size?: SpinnerSize;
     centered?: boolean;
     isBlue?: boolean;
-}
-
-interface Spinner extends React.FC<Props> {
-    Size: Record<'SMALL' | 'BASE' | 'LARGE', SpinnerSize>;
-    Suspense: React.FC<Props>;
 }
 
 const spin = keyframes`
@@ -35,7 +30,7 @@ const SpinnerComponent = styled.div<Props>`
     border-top-color: ${props => !props.isBlue ? 'rgb(255, 255, 255)' : 'hsl(212, 92%, 43%)'};
 `;
 
-const Spinner: Spinner = ({ centered, ...props }) => (
+const Spinner = ({ centered, ...props }: Props) => (
     centered ?
         <div
             css={[
@@ -48,19 +43,12 @@ const Spinner: Spinner = ({ centered, ...props }) => (
         :
         <SpinnerComponent {...props}/>
 );
-Spinner.displayName = 'Spinner';
+Spinner.DisplayName = 'Spinner';
 
 Spinner.Size = {
-    SMALL: 'small',
-    BASE: 'base',
-    LARGE: 'large',
+    SMALL: 'small' as SpinnerSize,
+    BASE: 'base' as SpinnerSize,
+    LARGE: 'large' as SpinnerSize,
 };
-
-Spinner.Suspense = ({ children, centered = true, size = Spinner.Size.LARGE, ...props }) => (
-    <Suspense fallback={<Spinner centered={centered} size={size} {...props}/>}>
-        {children}
-    </Suspense>
-);
-Spinner.Suspense.displayName = 'Spinner.Suspense';
 
 export default Spinner;

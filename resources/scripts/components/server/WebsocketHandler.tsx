@@ -20,18 +20,6 @@ export default () => {
     const setServerStatus = ServerContext.useStoreActions(actions => actions.status.setServerStatus);
     const { setInstance, setConnectionState } = ServerContext.useStoreActions(actions => actions.socket);
 
-    const updateToken = (uuid: string, socket: Websocket) => {
-        if (updatingToken) return;
-
-        updatingToken = true;
-        getWebsocketToken(uuid)
-            .then(data => socket.setToken(data.token, true))
-            .catch(error => console.error(error))
-            .then(() => {
-                updatingToken = false;
-            });
-    };
-
     const connect = (uuid: string) => {
         const socket = new Websocket();
 
@@ -83,6 +71,18 @@ export default () => {
                 setInstance(socket);
             })
             .catch(error => console.error(error));
+    };
+
+    const updateToken = (uuid: string, socket: Websocket) => {
+        if (updatingToken) return;
+
+        updatingToken = true;
+        getWebsocketToken(uuid)
+            .then(data => socket.setToken(data.token, true))
+            .catch(error => console.error(error))
+            .then(() => {
+                updatingToken = false;
+            });
     };
 
     useEffect(() => {

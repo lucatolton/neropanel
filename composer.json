@@ -1,12 +1,12 @@
 {
-    "name": "pterodactyl/panel",
-    "description": "The free, open-source game management panel. Supporting Minecraft, Spigot, BungeeCord, and SRCDS servers.",
+    "name": "jexuk/neropanel",
+    "description": "A custom panel for Nero Nodes.",
     "license": "MIT",
     "authors": [
         {
-            "name": "Dane Everitt",
-            "email": "dane@daneeveritt.com",
-            "homepage": "https://github.com/DaneEveritt",
+            "name": "Cam White",
+            "email": "cam@neronodes.net",
+            "homepage": "https://panel.neronodes.net",
             "role": "Lead Developer"
         }
     ],

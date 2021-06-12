@@ -9,6 +9,7 @@ import { ServerContext } from '@/state/server';
 import DatabasesContainer from '@/components/server/databases/DatabasesContainer';
 import FileManagerContainer from '@/components/server/files/FileManagerContainer';
 import { CSSTransition } from 'react-transition-group';
+import SuspenseSpinner from '@/components/elements/SuspenseSpinner';
 import FileEditContainer from '@/components/server/files/FileEditContainer';
 import SettingsContainer from '@/components/server/settings/SettingsContainer';
 import ScheduleContainer from '@/components/server/schedules/ScheduleContainer';
@@ -31,6 +32,7 @@ import RequireServerPermission from '@/hoc/RequireServerPermission';
 import ServerInstallSvg from '@/assets/images/server_installing.svg';
 import ServerRestoreSvg from '@/assets/images/server_restore.svg';
 import ServerErrorSvg from '@/assets/images/server_error.svg';
+import tw from 'twin.macro';
 
 const ConflictStateRenderer = () => {
     const status = ServerContext.useStoreState(state => state.server.data?.status || null);
@@ -90,7 +92,46 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
 
     return (
         <React.Fragment key={'server-router'}>
+        <div css={tw`bg-gradient-to-r from-purplebluedark to-purplebluelight pb-60`}>
             <NavigationBar/>
+            <CSSTransition timeout={150} classNames={'fade'} appear in>
+                <SubNavigation>
+                    {(!uuid || !id) ? <Spinner size={'large'} centered/> :
+                    <div>
+                        <NavLink to={`${match.url}`} exact>Console</NavLink>
+                        <Can action={'file.*'}>
+                            <NavLink to={`${match.url}/files`}>File Manager</NavLink>
+                        </Can>
+                        <Can action={'database.*'}>
+                            <NavLink to={`${match.url}/databases`}>Databases</NavLink>
+                        </Can>
+                        <Can action={'schedule.*'}>
+                            <NavLink to={`${match.url}/schedules`}>Schedules</NavLink>
+                        </Can>
+                        <Can action={'user.*'}>
+                            <NavLink to={`${match.url}/users`}>Users</NavLink>
+                        </Can>
+                        <Can action={'backup.*'}>
+                            <NavLink to={`${match.url}/backups`}>Backups</NavLink>
+                        </Can>
+                        <Can action={'allocation.*'}>
+                            <NavLink to={`${match.url}/network`}>Network</NavLink>
+                        </Can>
+                        <Can action={'startup.*'}>
+                            <NavLink to={`${match.url}/startup`}>Startup</NavLink>
+                        </Can>
+                        <Can action={[ 'settings.*', 'file.sftp' ]} matchAny>
+                            <NavLink to={`${match.url}/settings`}>Settings</NavLink>
+                        </Can>
+                        {rootAdmin &&
+                        <a href={'/admin/servers/view/' + serverId} rel="noreferrer" target={'_blank'}>
+                            <FontAwesomeIcon icon={faExternalLinkAlt}/>
+                        </a>
+                        }
+                    </div>}
+                </SubNavigation>
+            </CSSTransition>
+        </div>
             {(!uuid || !id) ?
                 error ?
                     <ServerError message={error}/>
@@ -98,42 +139,6 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
                     <Spinner size={'large'} centered/>
                 :
                 <>
-                    <CSSTransition timeout={150} classNames={'fade'} appear in>
-                        <SubNavigation>
-                            <div>
-                                <NavLink to={`${match.url}`} exact>Console</NavLink>
-                                <Can action={'file.*'}>
-                                    <NavLink to={`${match.url}/files`}>File Manager</NavLink>
-                                </Can>
-                                <Can action={'database.*'}>
-                                    <NavLink to={`${match.url}/databases`}>Databases</NavLink>
-                                </Can>
-                                <Can action={'schedule.*'}>
-                                    <NavLink to={`${match.url}/schedules`}>Schedules</NavLink>
-                                </Can>
-                                <Can action={'user.*'}>
-                                    <NavLink to={`${match.url}/users`}>Users</NavLink>
-                                </Can>
-                                <Can action={'backup.*'}>
-                                    <NavLink to={`${match.url}/backups`}>Backups</NavLink>
-                                </Can>
-                                <Can action={'allocation.*'}>
-                                    <NavLink to={`${match.url}/network`}>Network</NavLink>
-                                </Can>
-                                <Can action={'startup.*'}>
-                                    <NavLink to={`${match.url}/startup`}>Startup</NavLink>
-                                </Can>
-                                <Can action={[ 'settings.*', 'file.sftp' ]} matchAny>
-                                    <NavLink to={`${match.url}/settings`}>Settings</NavLink>
-                                </Can>
-                                {rootAdmin &&
-                                <a href={'/admin/servers/view/' + serverId} rel="noreferrer" target={'_blank'}>
-                                    <FontAwesomeIcon icon={faExternalLinkAlt}/>
-                                </a>
-                                }
-                            </div>
-                        </SubNavigation>
-                    </CSSTransition>
                     <InstallListener/>
                     <TransferListener/>
                     <WebsocketHandler/>
@@ -141,6 +146,8 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
                         <ConflictStateRenderer/>
                         :
                         <ErrorBoundary>
+
+                        <div css={tw`-mt-60`}>
                             <TransitionRouter>
                                 <Switch location={location}>
                                     <Route path={`${match.path}`} component={ServerConsole} exact/>
@@ -150,9 +157,9 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
                                         </RequireServerPermission>
                                     </Route>
                                     <Route path={`${match.path}/files/:action(edit|new)`} exact>
-                                        <Spinner.Suspense>
+                                        <SuspenseSpinner>
                                             <FileEditContainer/>
-                                        </Spinner.Suspense>
+                                        </SuspenseSpinner>
                                     </Route>
                                     <Route path={`${match.path}/databases`} exact>
                                         <RequireServerPermission permissions={'database.*'}>
@@ -187,6 +194,7 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
                                     <Route path={'*'} component={NotFound}/>
                                 </Switch>
                             </TransitionRouter>
+                          </div>
                         </ErrorBoundary>
                     }
                 </>

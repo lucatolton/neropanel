@@ -76,7 +76,6 @@ const LoginContainer = ({ history }: RouteComponentProps) => {
             {({ isSubmitting, setSubmitting, submitForm }) => (
                 <LoginFormContainer title={'Login to Continue'} css={tw`w-full flex`}>
                     <Field
-                        light
                         type={'text'}
                         label={'Username or Email'}
                         name={'username'}
@@ -84,7 +83,6 @@ const LoginContainer = ({ history }: RouteComponentProps) => {
                     />
                     <div css={tw`mt-6`}>
                         <Field
-                            light
                             type={'password'}
                             label={'Password'}
                             name={'password'}

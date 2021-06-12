@@ -11,7 +11,6 @@ import Can from '@/components/elements/Can';
 import SpinnerOverlay from '@/components/elements/SpinnerOverlay';
 import getServerAllocations from '@/api/swr/getServerAllocations';
 import isEqual from 'react-fast-compare';
-import { useDeepCompareEffect } from '@/plugins/useDeepCompareEffect';
 
 const NetworkContainer = () => {
     const [ loading, setLoading ] = useState(false);
@@ -24,7 +23,7 @@ const NetworkContainer = () => {
     const { data, error, mutate } = getServerAllocations();
 
     useEffect(() => {
-        mutate(allocations);
+        mutate(allocations, false);
     }, []);
 
     useEffect(() => {
@@ -32,12 +31,6 @@ const NetworkContainer = () => {
             clearAndAddHttpError({ key: 'server:network', error });
         }
     }, [ error ]);
-
-    useDeepCompareEffect(() => {
-        if (!data) return;
-
-        setServerFromState(state => ({ ...state, allocations: data }));
-    }, [ data ]);
 
     const onCreateAllocation = () => {
         clearFlashes('server:network');

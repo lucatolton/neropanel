@@ -12,7 +12,7 @@ type Props = Readonly<React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElemen
 
 const ContentBox = ({ title, borderColor, showFlashes, showLoadingOverlay, children, ...props }: Props) => (
     <div {...props}>
-        {title && <h2 css={tw`text-neutral-300 mb-4 px-4 text-2xl`}>{title}</h2>}
+        {title && <h2 css={tw`text-neutral-100 mb-4 px-4 text-2xl`}>{title}</h2>}
         {showFlashes &&
         <FlashMessageRender
             byKey={typeof showFlashes === 'string' ? showFlashes : undefined}

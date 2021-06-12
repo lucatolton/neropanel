@@ -27,13 +27,13 @@ const PageContentBlock: React.FC<PageContentBlockProps> = ({ title, showFlashKey
                     {children}
                 </ContentContainer>
                 <ContentContainer css={tw`mb-4`}>
-                    <p css={tw`text-center text-neutral-500 text-xs`}>
-                        &copy; 2015 - {(new Date()).getFullYear()}&nbsp;
+                    <p css={tw`text-center text-neutral-100 text-xs`}>
+                        &copy; 2015 - 2020&nbsp;
                         <a
                             rel={'noopener nofollow noreferrer'}
                             href={'https://pterodactyl.io'}
                             target={'_blank'}
-                            css={tw`no-underline text-neutral-500 hover:text-neutral-300`}
+                            css={tw`no-underline text-neutral-200 hover:text-neutral-300`}
                         >
                             Pterodactyl Software
                         </a>
