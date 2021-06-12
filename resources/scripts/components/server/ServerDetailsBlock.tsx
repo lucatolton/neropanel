@@ -72,8 +72,9 @@ const ServerDetailsBlock = () => {
         allocation => (allocation.alias || allocation.ip) + ':' + allocation.port
     )).toString();
 
-    const diskLimit = limits.disk ? megabytesToHuman(limits.disk) : 'Unlimited';
-    const memoryLimit = limits.memory ? megabytesToHuman(limits.memory) : 'Unlimited';
+    const cpuLimit = limits.cpu ? megabytesToHuman(limits.cpu) : '';
+    const diskLimit = limits.disk ? megabytesToHuman(limits.disk) : '';
+    const memoryLimit = limits.memory ? megabytesToHuman(limits.memory) : '';
 
     return (
         <TitledGreyBox css={tw`break-words`} title={name} icon={faServer}>
@@ -86,7 +87,7 @@ const ServerDetailsBlock = () => {
                         statusToColor(status, isInstalling || isTransferring),
                     ]}
                 />
-                &nbsp;{!status ? 'Connecting...' : (isInstalling ? 'Installing' : (isTransferring) ? 'Transferring' : status)}
+                &nbsp;{!status ? 'Connecting' : (isInstalling ? 'Installing' : (isTransferring) ? 'Transferring' : status)}
             </p>
             <CopyOnClick text={primaryAllocation}>
                 <p css={tw`text-xs mt-2`}>
@@ -95,15 +96,16 @@ const ServerDetailsBlock = () => {
                 </p>
             </CopyOnClick>
             <p css={tw`text-xs mt-2`}>
-                <FontAwesomeIcon icon={faMicrochip} fixedWidth css={tw`mr-1`}/> {stats.cpu.toFixed(2)}%
+                <FontAwesomeIcon icon={faMicrochip} fixedWidth css={tw`mr-1`}/> {stats.cpu.toFixed(0)}%
+                <span css={tw`text-neutral-500`}> {cpuLimit}%</span>
             </p>
             <p css={tw`text-xs mt-2`}>
                 <FontAwesomeIcon icon={faMemory} fixedWidth css={tw`mr-1`}/> {bytesToHuman(stats.memory)}
-                <span css={tw`text-neutral-500`}> / {memoryLimit}</span>
+                <span css={tw`text-neutral-500`}> {memoryLimit}</span>
             </p>
             <p css={tw`text-xs mt-2`}>
                 <FontAwesomeIcon icon={faHdd} fixedWidth css={tw`mr-1`}/>&nbsp;{bytesToHuman(stats.disk)}
-                <span css={tw`text-neutral-500`}> / {diskLimit}</span>
+                <span css={tw`text-neutral-500`}> {diskLimit}</span>
             </p>
         </TitledGreyBox>
     );
