@@ -59,6 +59,8 @@ export default () => {
                 <span css={tw`text-base`}>Welcome back, <strong>{user!.username}</strong>!</span>
                 <br/>
                 <br/>
+                <br/>
+                <br/>
             </p>
             <ContentBox>
                 <div css={tw`mb-0 sm:mb-6`}>
