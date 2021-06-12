@@ -72,7 +72,6 @@ const ServerDetailsBlock = () => {
         allocation => (allocation.alias || allocation.ip) + ':' + allocation.port
     )).toString();
 
-    const cpuLimit = limits.cpu ? megabytesToHuman(limits.cpu) : 'Unlimited';
     const diskLimit = limits.disk ? megabytesToHuman(limits.disk) : 'Unlimited';
     const memoryLimit = limits.memory ? megabytesToHuman(limits.memory) : 'Unlimited';
 
@@ -97,7 +96,6 @@ const ServerDetailsBlock = () => {
             </CopyOnClick>
             <p css={tw`text-xs mt-2`}>
                 <FontAwesomeIcon icon={faMicrochip} fixedWidth css={tw`mr-1`}/> {stats.cpu.toFixed(0)}%
-                <span css={tw`text-neutral-500`}> of {cpuLimit}%</span>
             </p>
             <p css={tw`text-xs mt-2`}>
                 <FontAwesomeIcon icon={faMemory} fixedWidth css={tw`mr-1`}/> {bytesToHuman(stats.memory)}
@@ -105,7 +103,7 @@ const ServerDetailsBlock = () => {
             </p>
             <p css={tw`text-xs mt-2`}>
                 <FontAwesomeIcon icon={faHdd} fixedWidth css={tw`mr-1`}/>&nbsp;{bytesToHuman(stats.disk)}
-                <span css={tw`text-neutral-500`}> {diskLimit}</span>
+                <span css={tw`text-neutral-500`}> of {diskLimit}</span>
             </p>
         </TitledGreyBox>
     );
