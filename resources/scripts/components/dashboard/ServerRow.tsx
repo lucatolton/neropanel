@@ -1,10 +1,10 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEthernet, faHdd, faMemory, faMicrochip, faServer } from '@fortawesome/free-solid-svg-icons';
+import { faHdd, faMemory, faMicrochip, faServer } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { Server } from '@/api/server/getServer';
 import getServerResourceUsage, { ServerPowerState, ServerStats } from '@/api/server/getServerResourceUsage';
-import { bytesToHuman, megabytesToHuman } from '@/helpers';
+import { bytesToHuman } from '@/helpers';
 import tw from 'twin.macro';
 import GreyRowBox from '@/components/elements/GreyRowBox';
 import Spinner from '@/components/elements/Spinner';
@@ -74,9 +74,6 @@ export default ({ server, className }: { server: Server; className?: string }) =
         alarms.disk = server.limits.disk === 0 ? false : isAlarmState(stats.diskUsageInBytes, server.limits.disk);
     }
 
-    const diskLimit = server.limits.disk !== 0 ? megabytesToHuman(server.limits.disk) : 'Unlimited';
-    const memoryLimit = server.limits.memory !== 0 ? megabytesToHuman(server.limits.memory) : 'Unlimited';
-
     return (
         <StatusIndicatorBox as={Link} to={`/server/${server.id}`} className={className} $status={stats?.status}>
             <div css={tw`flex items-center col-span-12 sm:col-span-5 lg:col-span-6`}>
@@ -85,29 +82,23 @@ export default ({ server, className }: { server: Server; className?: string }) =
                 </div>
                 <div>
                     <p css={tw`text-lg break-words`}>{server.name}</p>
-                    {!!server.description &&
-                    <p css={tw`text-sm text-neutral-300 break-words`}>{server.description}</p>
-                    }
+                    <p css={tw`text-sm text-neutral-400 ml-2`}>
+                        {
+                            server.allocations.filter(alloc => alloc.isDefault).map(allocation => (
+                                <React.Fragment key={allocation.ip + allocation.port.toString()}>
+                                    {allocation.alias || allocation.ip}
+                                </React.Fragment>
+                            ))
+                        }
+                    </p>
                 </div>
-            </div>
-            <div css={tw`hidden lg:col-span-2 lg:flex ml-4 justify-end h-full`}>
-                <FontAwesomeIcon icon={faEthernet} css={tw`text-neutral-500`}/>
-                <p css={tw`text-sm text-neutral-400 ml-2`}>
-                    {
-                        server.allocations.filter(alloc => alloc.isDefault).map(allocation => (
-                            <React.Fragment key={allocation.ip + allocation.port.toString()}>
-                                {allocation.alias || allocation.ip}:{allocation.port}
-                            </React.Fragment>
-                        ))
-                    }
-                </p>
             </div>
             <div css={tw`hidden col-span-7 lg:col-span-4 sm:flex items-baseline justify-center`}>
                 {(!stats || isSuspended) ?
                     isSuspended ?
                         <div css={tw`flex-1 text-center`}>
                             <span css={tw`bg-red-500 rounded px-2 py-1 text-red-100 text-xs`}>
-                                {server.status === 'suspended' ? 'Suspended' : 'Connection Error'}
+                                {server.status === 'suspended' ? 'Suspended' : 'Error'}
                             </span>
                         </div>
                         :
@@ -119,7 +110,7 @@ export default ({ server, className }: { server: Server; className?: string }) =
                                         :
                                         server.status === 'installing' ? 'Installing' : (
                                             server.status === 'restoring_backup' ?
-                                                'Restoring Backup'
+                                                'Restoring'
                                                 :
                                                 'Unavailable'
                                         )
@@ -133,7 +124,7 @@ export default ({ server, className }: { server: Server; className?: string }) =
                         <div css={tw`flex-1 flex md:ml-4 sm:flex hidden justify-center`}>
                             <Icon icon={faMicrochip} $alarm={alarms.cpu}/>
                             <IconDescription $alarm={alarms.cpu}>
-                                {stats.cpuUsagePercent} %
+                                {stats.cpuUsagePercent}%
                             </IconDescription>
                         </div>
                         <div css={tw`flex-1 ml-4 sm:block hidden`}>
@@ -143,7 +134,6 @@ export default ({ server, className }: { server: Server; className?: string }) =
                                     {bytesToHuman(stats.memoryUsageInBytes)}
                                 </IconDescription>
                             </div>
-                            <p css={tw`text-xs text-neutral-600 text-center mt-1`}>of {memoryLimit}</p>
                         </div>
                         <div css={tw`flex-1 ml-4 sm:block hidden`}>
                             <div css={tw`flex justify-center`}>
@@ -152,7 +142,6 @@ export default ({ server, className }: { server: Server; className?: string }) =
                                     {bytesToHuman(stats.diskUsageInBytes)}
                                 </IconDescription>
                             </div>
-                            <p css={tw`text-xs text-neutral-600 text-center mt-1`}>of {diskLimit}</p>
                         </div>
                     </React.Fragment>
                 }

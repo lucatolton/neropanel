@@ -13,9 +13,8 @@ import { PaginatedResult } from '@/api/http';
 import Pagination from '@/components/elements/Pagination';
 import { useLocation } from 'react-router-dom';
 import ContentBox from '@/components/elements/ContentBox';
-import { Actions, State, useStoreActions, useStoreState } from 'easy-peasy';
+import { State, useStoreState } from 'easy-peasy';
 import { ApplicationStore } from '@/state';
-
 
 export default () => {
     const user = useStoreState((state: State<ApplicationStore>) => state.user.data);
@@ -54,50 +53,41 @@ export default () => {
 
     return (
         <PageContentBlock title={'Dashboard'} showFlashKey={'dashboard'}>
-        <p css={tw`text-center text-neutral-100 my-2`}>
-            <span css={tw`text-base`}>Welcome back, {user!.username}.</span>
-            <br/>
-            <span css={tw`text-sm`}>Here you can see all the servers you have access to.</span>
-        </p>
-          <ContentBox title={'Servers'}>
-              <div css={tw`mb-0 sm:mb-6`}>
-              {rootAdmin &&
-              <div css={tw`mb-2 flex justify-end items-center`}>
-                  <p css={tw`uppercase text-xs text-neutral-400 mr-2`}>
-                      {showOnlyAdmin ? 'Showing others\' servers' : 'Showing your servers'}
-                  </p>
-                  <Switch
-                      name={'show_all_servers'}
-                      defaultChecked={showOnlyAdmin}
-                      onChange={() => setShowOnlyAdmin(s => !s)}
-                  />
-              </div>
-              }
-              {!servers ?
-                  <Spinner centered size={'large'}/>
-                  :
-                  <Pagination data={servers} onPageSelect={setPage}>
-                      {({ items }) => (
-                          items.length > 0 ?
-                              items.map((server, index) => (
-                                  <ServerRow
-                                      key={server.uuid}
-                                      server={server}
-                                      css={index > 0 ? tw`mt-2` : undefined}
-                                  />
-                              ))
-                              :
-                              <p css={tw`text-center text-sm text-neutral-400`}>
-                                  {showOnlyAdmin ?
-                                      'There are no other servers to display.'
-                                      :
-                                      'There are no servers associated with your account.'
-                                  }
-                              </p>
-                      )}
-                  </Pagination>
-              }
-              </div>
+            <p css={tw`text-center text-neutral-100 my-2`}>
+                <span css={tw`text-base`}>Welcome back, {user!.username}!</span>
+            </p>
+            <ContentBox title={'Servers'}>
+                <div css={tw`mb-0 sm:mb-6`}>
+                    {rootAdmin &&
+                        <div css={tw`mb-2 flex justify-end items-center`}>
+                            <Switch
+                                name={'show_all_servers'}
+                                defaultChecked={showOnlyAdmin}
+                                onChange={() => setShowOnlyAdmin(s => !s)}
+                            />
+                        </div>
+                    }
+                    {!servers ?
+                        <Spinner centered size={'large'}/>
+                        :
+                        <Pagination data={servers} onPageSelect={setPage}>
+                            {({ items }) => (
+                                items.length > 0 ?
+                                    items.map((server, index) => (
+                                        <ServerRow
+                                            key={server.uuid}
+                                            server={server}
+                                            css={index > 0 ? tw`mt-2` : undefined}
+                                        />
+                                    ))
+                                    :
+                                    <p css={tw`text-center text-sm text-neutral-400`}>
+                                        Seems quite empty here...
+                                    </p>
+                            )}
+                        </Pagination>
+                    }
+                </div>
             </ContentBox>
         </PageContentBlock>
     );
