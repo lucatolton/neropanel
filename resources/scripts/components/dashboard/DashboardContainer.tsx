@@ -54,9 +54,9 @@ export default () => {
     return (
         <PageContentBlock title={'Dashboard'} showFlashKey={'dashboard'}>
             <p css={tw`text-center text-neutral-100 my-2`}>
-                <span css={tw`text-base`}>Welcome back, {user!.username}!</span>
+                <span css={tw`text-base`}>Welcome back, <strong>{user!.username}!</strong></span>
             </p>
-            <ContentBox title={'Servers'}>
+            <ContentBox>
                 <div css={tw`mb-0 sm:mb-6`}>
                     {rootAdmin &&
                         <div css={tw`mb-2 flex justify-end items-center`}>
