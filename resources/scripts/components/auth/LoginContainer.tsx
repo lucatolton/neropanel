@@ -74,7 +74,7 @@ const LoginContainer = ({ history }: RouteComponentProps) => {
             })}
         >
             {({ isSubmitting, setSubmitting, submitForm }) => (
-                <LoginFormContainer title={'Login to Continue'} css={tw`w-full flex`}>
+                <LoginFormContainer title={'Hello again!'} css={tw`w-full flex`}>
                     <Field
                         type={'text'}
                         label={'Username or Email'}
@@ -114,7 +114,7 @@ const LoginContainer = ({ history }: RouteComponentProps) => {
                             to={'/auth/password'}
                             css={tw`text-xs text-neutral-500 tracking-wide no-underline uppercase hover:text-neutral-600`}
                         >
-                            Forgot password?
+                            Having trouble logging in?
                         </Link>
                     </div>
                 </LoginFormContainer>
