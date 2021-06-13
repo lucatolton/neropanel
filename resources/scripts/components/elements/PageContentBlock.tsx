@@ -28,7 +28,7 @@ const PageContentBlock: React.FC<PageContentBlockProps> = ({ title, showFlashKey
                 </ContentContainer>
                 <ContentContainer css={tw`mb-4`}>
                     <p css={tw`text-center text-neutral-100 text-xs`}>
-                        1.4.0a-staging
+                        © 2015 - 2021 Pterodactyl Software | Modified for Nero Nodes | 1.4.0a-staging
                     </p>
                 </ContentContainer>
             </>
