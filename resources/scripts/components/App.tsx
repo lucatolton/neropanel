@@ -14,6 +14,7 @@ import tw, { GlobalStyles as TailwindGlobalStyles } from 'twin.macro';
 import GlobalStylesheet from '@/assets/css/GlobalStylesheet';
 import { history } from '@/components/history';
 import { setupInterceptors } from '@/api/interceptors';
+import AnnouncementsRouter from '@/routers/AnnouncementsRouter';
 
 interface ExtendedWindow extends Window {
     SiteConfiguration?: SiteSettings;
@@ -79,6 +80,7 @@ const App = () => {
                         {SiteConfiguration?.analytics && <Pageview/>}
                         <Switch>
                             <Route path="/server/:id" component={ServerRouter}/>
+                            <Route path="/announcements" component={AnnouncementsRouter}/>
                             <Route path="/auth" component={AuthenticationRouter}/>
                             <Route path="/" component={DashboardRouter}/>
                             <Route path={'*'} component={NotFound}/>

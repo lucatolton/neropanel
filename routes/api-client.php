@@ -119,3 +119,8 @@ Route::group(['prefix' => '/servers/{server}', 'middleware' => [AuthenticateServ
         Route::put('/docker-image', 'Servers\SettingsController@dockerImage');
     });
 });
+
+Route::group(['prefix' => '/announcements'], function () {
+    Route::get('/', 'AnnouncementsController@index');
+    Route::get('/{id}', 'AnnouncementsController@view');
+});
