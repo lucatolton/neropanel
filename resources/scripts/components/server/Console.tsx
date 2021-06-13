@@ -102,8 +102,8 @@ export default () => {
     );
 
     const handlePowerChangeEvent = (state: string) => {
-        if (state === 'offline') { terminal.writeln(TERMINAL_PRELUDE + 'Seems quite quiet here...' + '\u001b[0m',); }
-        if (state === 'starting') { terminal.writeln(TERMINAL_PRELUDE + 'Your server is now starting.' + '\u001b[0m',); }
+        if (state === 'offline') { terminal.writeln(TERMINAL_PRELUDE + 'Seems quite quiet here...' + '\u001b[0m',); return; }
+        if (state === 'starting') { terminal.writeln(TERMINAL_PRELUDE + 'Your server is now starting.' + '\u001b[0m',); return; }
         if (state === 'starting') { terminal.writeln(TERMINAL_PRELUDE + 'Server started successfully.' + '\u001b[0m',); }
     };
 
