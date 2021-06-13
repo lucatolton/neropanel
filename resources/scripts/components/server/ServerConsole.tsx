@@ -29,8 +29,7 @@ const ServerConsole = () => {
                     <div css={tw`mt-4 rounded bg-yellow-500 p-3`}>
                         <ContentContainer>
                             <p css={tw`text-sm text-yellow-900`}>
-                                This server is currently running its installation process and most actions are
-                                unavailable.
+                                Your server is currently installing. Most actions will be unavailable.
                             </p>
                         </ContentContainer>
                     </div>
@@ -39,8 +38,7 @@ const ServerConsole = () => {
                         <div css={tw`mt-4 rounded bg-yellow-500 p-3`}>
                             <ContentContainer>
                                 <p css={tw`text-sm text-yellow-900`}>
-                                    This server is currently being transferred to another node and all actions
-                                    are unavailable.
+                                    Your server is currently transferring to another node. Most actions will be unavailable.
                                 </p>
                             </ContentContainer>
                         </div>
